@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
     return "Hello World!"
 
-@app.route('/wechat', methods=['GET'])
+@app.route('/wechat', methods=['GET','POST'])
 # route() 装饰器用于把一个函数绑定到一个 URL
 # 所以在微信公众号修改配置那里，如果你写了“/wechat”在括号里，就要在url那里加上，不然就会token验证失败！
 def wechat_tuling():
@@ -36,14 +36,11 @@ def wechat_tuling():
         mysignature = hashlib.sha1(temp.encode('utf-8')).hexdigest()
         # # 判断请求来源，将三个参数字符串拼接成一个字符串进行sha1加密,这里注意转换成utf-8格式
         if my_signature == mysignature:
-            # 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
-            #res = make_response(my_echostr)
-            #res.headers['content-type'] = 'text'
-            # 这段代码是为了避免微信token验证失败
+            # 开发者获得加密后的字符串可与signature对比，标识该请求来源微信
             return my_echostr
         else:
             return ""
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5050)
-    # 加上host这段，让其他用户可以访问你的服务, 新浪SAE需要指定5050端口
+    # 加上host这段，外网可以访问, 新浪SAE需要指定5050端口
