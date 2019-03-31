@@ -1,4 +1,0 @@
-name: wecrobot
-version: 1
-
-web: python myapp.py
