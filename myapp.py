@@ -10,19 +10,18 @@ app.debug = True
 
 @app.route('/robot/', methods=['GET'])
 # route() 装饰器用于把一个函数绑定到一个 URL
-# 在微信公众号修改配置那里，如果你写了“/robot/”在括号里，就要在url那里加上，不然就会成为token验证失败的一种情况！
+# 在微信公众号修改配置那里，如果你写的是“/wechat/”在括号里，就要在二级域名后面加上，不然就会出现token验证失败的一种情况！
 def wechat_tuling():
-    # 下面是校验消息来自微信服务器
     if request.method == 'GET':
         my_signature = request.args.get('signature', '') # 获取携带 signature微信加密签名的参数
         my_timestamp = request.args.get('timestamp', '') # 获取携带随机数timestamp的参
         my_nonce = request.args.get('nonce', '')   # 获取携带时间戳nonce的参数
         my_echostr = request.args.get('echostr', '')  # 获取携带随机字符串echostr的参数
-        token = 'xxxxxx'
-        # 这里输入你在微信公众号里面填的token
+        token = 'xxxxx'
+        # 这里输入你要在微信公众号里面填的token，保持一致
         data = [token, my_timestamp, my_nonce]
-        # 进行字典排序
         data.sort()
+        # 进行字典排序
         temp = ''.join(data)
         # 拼接成字符串
         mysignature = hashlib.sha1(temp.encode('utf-8')).hexdigest()
@@ -30,10 +29,9 @@ def wechat_tuling():
         if my_signature == mysignature:
             # 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
             return make_response(my_echostr)
-            # 如果原样返回echostr的内容，则接入成功；否则接入失败
         else:
-            return ''      
-
+            return ''
+            
 @app.route('/robot/', methods=['POST'])
 # 下面是对请求解析，返回图灵机器人的回复
 def autoplay(): 
@@ -49,16 +47,17 @@ def autoplay():
     xml_sta = '<xml><ToUserName><![CDATA[%s]]></ToUserName><FromUserName><![CDATA[%s]]></FromUserName><CreateTime>%s</CreateTime><MsgType><![CDATA[text]]></MsgType><Content><![CDATA[%s]]></Content></xml>'
     # 定义返回的xml数据结构，这里指的是文本消息，更多请参考微信公众号开发者文档
     if msgType == 'text':
-        # 判断消息类型
-        tuling_reply = reply(content)
-        # 调用图灵api定义函数 赋值给回复内容
+        # 判断消息类型，如果返回的字段是text，则是文字
+        tuling_reply = reply(content)  
+       # 调用图灵机器人api回复赋值给xml里面的content，这里定义为tuling_reply
         res = make_response(xml_sta % (fromUser, toUser, str(int(time.time())), tuling_reply))
-        # 公众号做出响应
+        # 微信公众号做出响应，自动回复的格式如上
         res.content_type = 'application/xml'
-        # 记得定义回复内容类型为‘application/xml’格式
+        # 定义回复的类型为xml
         return res
+        # 输出自动回复
     else:
-        # 如果输入不是文字的则会回复下面这段对话
+        # 如果输入非文字的则会提示下面这句话
         return '我还只会文字，请等我慢慢成长，谢谢！'
 
 def reply(info):
@@ -90,4 +89,4 @@ def reply(info):
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050)
-    # 加上host这段，让其他用户可以访问你的服务, 新浪SAE需要指定5050端口
+    # 加上host这段，就可以在浏览器访问你的网址, 新浪SAE需要指定5050端口
