@@ -63,7 +63,7 @@ setuptools==39.0.1
 sortedcontainers==2.0.5	
 soupsieve==1.6.2	
 tornado==5.1.1	
-urllib3==1.24.1	
+urllib3==1.24.2	
 urwid==2.0.1	
 w3lib==1.20.0	
 wheel==0.33.1	
