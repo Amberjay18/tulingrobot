@@ -37,7 +37,7 @@ itsdangerous==1.1.0
 jdcal==1.4	
 kaitaistruct==0.8	
 ldap3==2.5.2	
-lxml==4.3.2	
+lxml==4.6.3	
 mitmproxy==4.0.4	
 openpyxl==2.6.0	
 parsel==1.5.1	
