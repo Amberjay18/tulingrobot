@@ -59,7 +59,7 @@ ruamel.yaml==0.15.89
 schedule==0.6.0	
 selenium==3.141.0
 service-identity==18.1.0	
-setuptools==39.0.1	
+setuptools==65.5.1	
 sortedcontainers==2.0.5	
 soupsieve==1.6.2	
 tornado==5.1.1	
